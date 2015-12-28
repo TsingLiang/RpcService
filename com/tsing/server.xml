@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan base-package="com.tsing"/>
+	
+	<!-- 配置服务注册组件 -->
+    <bean id="serviceRegistry" class="com.tsing.ServiceRegistry">
+        <constructor-arg name="registryAddress" value="127.0.0.1:2181"/>
+    </bean>
+
+    <!-- 配置 RPC 服务器 -->
+    <bean id="rpcServer" class="com.tsing.RpcServer">
+        <constructor-arg name="serverAddress" value="127.0.0.1:5000"/>
+        <constructor-arg name="serviceRegistry" ref="serviceRegistry"/>
+    </bean>
+</beans>

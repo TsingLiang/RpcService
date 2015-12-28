@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- 配置负债均衡策略 -->
+    <bean id="roundRobin" class="com.tsing.RoundRobin"/>
+    <bean id="randomRobin" class="com.tsing.RandomRobin"/>
+
+
+	<!-- 配置服务发现组件 -->
+    <bean id="serviceDiscovery" class="com.tsing.ServiceDiscovery">
+        <constructor-arg name="registryAddress" value="127.0.0.1:2181"/>
+        <constructor-arg name="service" value="com.tsing.Hello"/>
+        <constructor-arg name="strategy" ref="roundRobin"/>
+    </bean>
+
+    <!-- 配置 RPC 代理 -->
+    <bean id="rpcProxy" class="com.tsing.RpcProxy">
+        <constructor-arg name="serviceDiscovery" ref="serviceDiscovery"/>
+    </bean>
+</beans>
